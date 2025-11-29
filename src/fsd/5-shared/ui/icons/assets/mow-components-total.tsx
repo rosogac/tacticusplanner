@@ -20,7 +20,15 @@ export const MoWComponentsTotal: React.FC<Props> = ({ components, size = 'small'
                 const componentName = Alliance[alliance].toLowerCase() + 'Component';
                 return (
                     componentsCount >= 0 && (
-                        <Badge key={alliance} badgeContent={<b>{componentsCount}</b>}>
+                        <Badge
+                            key={alliance}
+                            badgeContent={<b>{componentsCount}</b>}
+                            sx={{
+                                '& .MuiBadge-badge': {
+                                    right: -8,
+                                    top: 5,
+                                },
+                            }}>
                             <MiscIcon icon={componentName} width={sizePx} height={sizePx} />
                         </Badge>
                     )

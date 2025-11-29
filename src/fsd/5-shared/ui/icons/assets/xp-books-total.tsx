@@ -42,7 +42,15 @@ export const XpBooksTotal: React.FC<Props> = ({ xp, size = 'small' }) => {
                 const bookName = Rarity[rarity].toLowerCase() + 'Book';
                 return (
                     booksCount > 0 && (
-                        <Badge key={rarity} badgeContent={<b>{booksCount}</b>}>
+                        <Badge
+                            key={rarity}
+                            badgeContent={<b>{booksCount}</b>}
+                            sx={{
+                                '& .MuiBadge-badge': {
+                                    right: -9,
+                                    top: 5,
+                                },
+                            }}>
                             <MiscIcon icon={bookName} width={sizePx} height={sizePx} />
                         </Badge>
                     )

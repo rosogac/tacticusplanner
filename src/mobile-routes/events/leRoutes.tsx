@@ -1,9 +1,9 @@
-﻿import { Card, CardContent, CardHeader } from '@mui/material';
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import { menuItemById } from 'src/models/menu-items';
 
+import { Card } from '@/fsd/5-shared/ui';
 import { UnitShardIcon } from '@/fsd/5-shared/ui/icons';
 
 import { CharactersService } from '@/fsd/4-entities/character';
@@ -49,44 +49,37 @@ export const PlanLeRoutes = () => {
         [CharactersService.activeLres]
     );
     return (
-        <div style={{ display: 'flex', gap: 10, flexDirection: 'column', alignItems: 'center' }}>
+        <div className="flex flex-col items-center w-full gap-3 px-4 pb-4">
             <Card
-                variant="outlined"
                 onClick={() => navigate(leMasterTableMenuItem.routeMobile)}
-                sx={{
-                    width: 350,
-                    minHeight: 140,
-                }}>
-                <CardHeader
-                    title={
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                            {leMasterTableMenuItem.icon} {leMasterTableMenuItem.label}
-                        </div>
-                    }
-                />
+                minHeight="min-h-[140px]"
+                width="w-full"
+                className="p-6 items-center justify-center gap-2">
+                <div className="text-gray-700 dark:text-[#fafafa]">{leMasterTableMenuItem.icon}</div>
+                <span className="text-xl font-bold text-gray-800 dark:text-[#fafafa] text-center">
+                    {leMasterTableMenuItem.label}
+                </span>
             </Card>
 
             {sortedActiveLres.map(le => {
                 const isFinished = !!le.lre?.finished;
                 return (
                     <Card
-                        variant="outlined"
                         key={le.name}
                         onClick={() => navigate(`/mobile/plan/lre?character=${LegendaryEventEnum[le.lre!.id]}`)}
-                        sx={{
-                            width: 350,
-                            minHeight: 140,
-                            opacity: isFinished ? 0.5 : 1,
-                        }}>
-                        <CardHeader
-                            title={
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                    <UnitShardIcon icon={le.roundIcon} name={le.name} /> {le.name}
-                                </div>
-                            }
-                            subheader={'Legendary Event'}
-                        />
-                        <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+                        minHeight="min-h-[140px]"
+                        width="w-full"
+                        className={`${isFinished ? 'opacity-50' : ''}`}>
+                        <div className="flex items-center gap-3 pb-3 border-b border-gray-300 dark:border-[#ffffff1a]">
+                            <UnitShardIcon icon={le.roundIcon} name={le.name} />
+                            <div className="flex flex-col">
+                                <span className="text-lg font-semibold text-gray-800 dark:text-[#fafafa]">
+                                    {le.name}
+                                </span>
+                                <span className="text-sm text-gray-600 dark:text-[#fafafa]">Legendary Event</span>
+                            </div>
+                        </div>
+                        <div className="flex flex-col gap-1 text-gray-700 dark:text-[#fafafa]">
                             {isFinished ? (
                                 <span>Finished</span>
                             ) : (
@@ -95,7 +88,7 @@ export const PlanLeRoutes = () => {
                                     <span>Next event: {le.lre?.nextEventDate}</span>
                                 </>
                             )}
-                        </CardContent>
+                        </div>
                     </Card>
                 );
             })}

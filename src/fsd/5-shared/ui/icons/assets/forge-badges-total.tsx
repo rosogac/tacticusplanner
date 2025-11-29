@@ -20,7 +20,15 @@ export const ForgeBadgesTotal: React.FC<Props> = ({ badges, size = 'small' }) =>
                 const badgeName = Rarity[rarity].toLowerCase() + 'ForgeBadge';
                 return (
                     badgesCount >= 0 && (
-                        <Badge key={rarity} badgeContent={<b>{badgesCount}</b>}>
+                        <Badge
+                            key={rarity}
+                            badgeContent={<b>{badgesCount}</b>}
+                            sx={{
+                                '& .MuiBadge-badge': {
+                                    right: -8,
+                                    top: 5,
+                                },
+                            }}>
                             <MiscIcon icon={badgeName} width={sizePx} height={sizePx} />
                         </Badge>
                     )

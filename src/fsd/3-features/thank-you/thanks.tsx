@@ -4,8 +4,6 @@ import { useEffect, useState } from 'react';
 import { isMobile } from 'react-device-detect';
 import { Link } from 'react-router-dom';
 
-import { FlexBox } from '@/fsd/5-shared/ui';
-
 import { contentCreators, contributors } from './data';
 import { ThankYouCard } from './thank-you.card';
 import { IContributor, IContentCreator, IYoutubeCreator } from './thank-you.model';
@@ -86,14 +84,24 @@ export const Thanks = ({ sliderMode }: { sliderMode?: boolean }) => {
     const currentContributor = contributorsList[activeContributorIndex];
 
     return (
-        <FlexBox style={{ flexDirection: 'column' }}>
-            <Button style={{ textAlign: 'center' }} component={Link} to={isMobile ? '/mobile/ty' : '/ty'}>
-                Thank you cards
-            </Button>
+        <div className="flex flex-col gap-4">
+            <div className="text-center">
+                <Button
+                    variant="outlined"
+                    component={Link}
+                    to={isMobile ? '/mobile/ty' : '/ty'}
+                    className="text-gray-800 dark:text-gray-200">
+                    Thank you cards
+                </Button>
+            </div>
 
             {sliderMode && currentContributor ? (
-                <div style={{ display: 'flex', justifyContent: 'center', minHeight: 400, gap: 10 }}>
-                    {isMobile && <ThankYouCard contributor={currentContributor} hide={hide} />}
+                <div className="flex justify-center items-stretch h-[400px] gap-3 w-full px-4 md:px-0">
+                    {isMobile && (
+                        <div className="flex justify-center w-full h-full">
+                            <ThankYouCard contributor={currentContributor} hide={hide} />
+                        </div>
+                    )}
                     {!isMobile && (
                         <>
                             <ThankYouCard contributor={currentContributor} hide={hide} />
@@ -103,12 +111,12 @@ export const Thanks = ({ sliderMode }: { sliderMode?: boolean }) => {
                     )}
                 </div>
             ) : (
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, justifyContent: 'center' }}>
+                <div className="flex flex-wrap justify-center gap-3 w-full">
                     {contributorsList.map(x => (
                         <ThankYouCard key={x.name} contributor={x} />
                     ))}
                 </div>
             )}
-        </FlexBox>
+        </div>
     );
 };

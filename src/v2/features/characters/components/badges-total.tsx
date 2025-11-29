@@ -17,7 +17,15 @@ export const BadgesTotal: React.FC<Props> = ({ badges, alliance, size = 'small' 
                 const badgesCount = badges[rarity];
                 return (
                     badgesCount >= 0 && (
-                        <Badge key={rarity} badgeContent={<b>{badgesCount}</b>}>
+                        <Badge
+                            key={rarity}
+                            badgeContent={<b>{badgesCount}</b>}
+                            sx={{
+                                '& .MuiBadge-badge': {
+                                    right: -1,
+                                    top: 5,
+                                },
+                            }}>
                             <BadgeImage alliance={alliance} rarity={rarity} size={size} />
                         </Badge>
                     )

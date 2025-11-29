@@ -45,7 +45,7 @@ export const MobileHome = () => {
 
     return (
         <div>
-            <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+            <div className="flex justify-between pb-2 border-b border-gray-300 dark:border-[#ffffff1a] mb-4">
                 <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
                     <IconButton color="inherit" onClick={() => navigate('/mobile/faq')}>
                         <Tooltip title="Frequently Asked Questions">{menuItemById.faq.icon}</Tooltip>

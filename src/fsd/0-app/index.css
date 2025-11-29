@@ -159,7 +159,7 @@
         --overlay: rgb(35, 35, 34);
         --overlay-fg: var(--color-slate-50);
 
-        --success: var(--color-emerald-600);
+        --success: var(--color-emerald-800);
         --success-fg: var(--color-white);
 
         --warning: var(--color-amber-400);

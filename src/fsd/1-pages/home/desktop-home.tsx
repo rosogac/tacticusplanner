@@ -1,5 +1,4 @@
-﻿import { Card, CardContent, CardHeader } from '@mui/material';
-import { sum } from 'lodash';
+﻿import { sum } from 'lodash';
 import { useContext } from 'react';
 import { isMobile } from 'react-device-detect';
 import Zoom from 'react-medium-image-zoom';
@@ -13,7 +12,7 @@ import { menuItemById } from 'src/models/menu-items';
 import { StoreContext } from 'src/reducers/store.provider';
 
 import { useAuth } from '@/fsd/5-shared/model';
-import { getImageUrl } from '@/fsd/5-shared/ui';
+import { Card, getImageUrl } from '@/fsd/5-shared/ui';
 import { MiscIcon, UnitShardIcon } from '@/fsd/5-shared/ui/icons';
 
 import { CharactersService } from '@/fsd/4-entities/character';
@@ -59,28 +58,24 @@ function LreSection({ nextEvent }: { nextEvent: ILegendaryEventStatic }) {
 
     return (
         <div>
-            <h3 style={{ textAlign: 'center' }}>{isEventStarted ? 'Ongoing ' : 'Upcoming '}Legendary Event</h3>
-            <Card
-                variant="outlined"
-                classes="dark:bg-dark-navy"
-                onClick={navigateToNextLre}
-                sx={{
-                    width: 350,
-                    minHeight: 200,
-                    cursor: 'pointer',
-                }}>
-                <CardHeader
-                    title={
-                        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                            <UnitShardIcon icon={nextLeUnit?.roundIcon ?? ''} height={50} width={50} />
+            <h3 className="text-center text-gray-800 dark:text-[#fafafa] mb-2">
+                {isEventStarted ? 'Ongoing ' : 'Upcoming '}Legendary Event
+            </h3>
+            <Card onClick={navigateToNextLre} className="p-3 gap-2">
+                <div className="flex items-center gap-3 pb-2 border-b border-gray-300 dark:border-[#ffffff1a]">
+                    <UnitShardIcon icon={nextLeUnit?.roundIcon ?? ''} height={50} width={50} />
+                    <div className="flex flex-col">
+                        <span className="text-lg font-semibold text-gray-800 dark:text-[#fafafa]">
                             {nextLeUnit?.shortName}
-                        </div>
-                    }
-                    subheader={formatMonthAndDay(isEventStarted ? nextLeDateEnd : nextLeDateStart)}
-                />
-                <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+                        </span>
+                        <span className="text-sm text-gray-600 dark:text-[#fafafa]">
+                            {formatMonthAndDay(isEventStarted ? nextLeDateEnd : nextLeDateStart)}
+                        </span>
+                    </div>
+                </div>
+                <div className="flex flex-col font-medium text-gray-700 dark:text-[#fafafa]">
                     {isEventStarted ? timeToEnd : timeToStart}
-                </CardContent>
+                </div>
             </Card>
         </div>
     );
@@ -130,141 +125,150 @@ export const DesktopHome = () => {
     };
 
     return (
-        <div>
+        <div className="flex flex-col gap-4 pb-8">
             {announcements()}
-            <Thanks sliderMode={true} />
-            {/*{announcements()}*/}
-            <div
-                style={{
-                    display: 'flex',
-                    gap: 10,
-                    flexWrap: 'wrap',
-                    alignItems: 'flex-start',
-                    justifyContent: 'center',
-                }}>
-                <div>
-                    <h3 style={{ textAlign: 'center' }}>Daily Raids</h3>
+
+            {/* Thank You Section */}
+            <div className="mb-2">
+                <Thanks sliderMode={true} />
+            </div>
+
+            {/* Main Cards Row - Daily Raids, LRE Event, Goals, and Calendar */}
+            <div className="w-full max-w-[1500px] mx-auto flex flex-col md:flex-row flex-wrap justify-center gap-3 px-4 md:px-0">
+                {/* Daily Raids */}
+                <div className="w-full md:w-auto">
+                    <h3 className="text-center text-gray-800 dark:text-[#fafafa] mb-2">Daily Raids</h3>
                     <Card
-                        variant="outlined"
                         onClick={() =>
                             navigate(isMobile ? dailyRaidsMenuItem.routeMobile : dailyRaidsMenuItem.routeWeb)
                         }
-                        sx={{
-                            width: 350,
-                            minHeight: 200,
-                            cursor: 'pointer',
-                        }}>
-                        <CardHeader
-                            title={
-                                <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                    {dailyRaidsMenuItem.icon}{' '}
-                                    {dailyRaids.raidedLocations?.length + ' locations raided today'}
-                                </div>
-                            }
-                            subheader={
-                                <span>
-                                    {sum(dailyRaids.raidedLocations?.map(x => x.energySpent))}{' '}
-                                    <MiscIcon icon={'energy'} width={15} height={15} />
-                                    {' spent'}
+                        className="p-3 gap-2">
+                        <div className="flex flex-col gap-2 pb-2 border-b border-gray-300 dark:border-[#ffffff1a]">
+                            <div className="flex items-center gap-2">
+                                {dailyRaidsMenuItem.icon}
+                                <span className="text-base font-semibold text-gray-800 dark:text-[#fafafa]">
+                                    {dailyRaids.raidedLocations?.length + ' locations'}
                                 </span>
-                            }
-                        />
-                        <CardContent>
-                            <ul style={{ margin: 0 }}>
-                                {dailyRaids.raidedLocations.map(x => (
-                                    <li key={x.id}>
-                                        {x.raidsCount}x {x.campaign} {x.nodeNumber}
-                                    </li>
-                                ))}
-                            </ul>
-                        </CardContent>
+                            </div>
+                            <span className="flex items-center gap-1 text-sm text-gray-600 dark:text-[#fafafa]">
+                                {sum(dailyRaids.raidedLocations?.map(x => x.energySpent))}
+                                <MiscIcon icon={'energy'} width={15} height={15} />
+                                {' spent'}
+                            </span>
+                        </div>
+                        <ul className="flex-1 pl-5 m-0 space-y-1 overflow-y-auto text-sm">
+                            {dailyRaids.raidedLocations.map(x => (
+                                <li key={x.id} className="text-gray-700 dark:text-[#fafafa]">
+                                    <span className="font-semibold text-blue-600 dark:text-blue-400">
+                                        {x.raidsCount}x
+                                    </span>{' '}
+                                    {x.campaign} {x.nodeNumber}
+                                </li>
+                            ))}
+                        </ul>
                     </Card>
                 </div>
-
-                {nextLeMenuItem && <LreSection nextEvent={nextLeMenuItem} />}
+                {nextLeMenuItem && (
+                    <div className="w-full md:w-auto">
+                        <LreSection nextEvent={nextLeMenuItem} />
+                    </div>
+                )}
 
                 {!!goals.length && (
-                    <div>
-                        <h3 style={{ textAlign: 'center' }}>Your Goals</h3>
+                    <div className="w-full md:w-auto">
+                        <h3 className="text-center text-gray-800 dark:text-[#fafafa] mb-2">Your Goals</h3>
                         <Card
-                            variant="outlined"
                             onClick={() => navigate(isMobile ? goalsMenuItem.routeMobile : goalsMenuItem.routeWeb)}
-                            sx={{
-                                width: 350,
-                                minHeight: 200,
-                                cursor: 'pointer',
-                            }}>
-                            <CardHeader
-                                title={
-                                    <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                                        {goalsMenuItem.icon} {goalsMenuItem.label}
-                                    </div>
-                                }
-                            />
-                            <CardContent style={{ display: 'flex', flexDirection: 'column' }}>
+                            className="p-3 gap-2">
+                            <div className="flex items-center gap-2 pb-2 border-b border-gray-300 dark:border-[#ffffff1a]">
+                                {goalsMenuItem.icon}
+                                <span className="text-lg font-semibold text-gray-800 dark:text-[#fafafa]">
+                                    {goalsMenuItem.label}
+                                </span>
+                            </div>
+                            <div className="flex flex-col gap-2">
                                 {!!unlockGoals && (
-                                    <span>
-                                        <b>Unlock</b> {unlockGoals} characters
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-bold text-blue-600 dark:text-blue-400">Unlock</span>
+                                        <span className="text-gray-700 dark:text-[#fafafa]">
+                                            {unlockGoals} characters
+                                        </span>
+                                    </div>
                                 )}
                                 {!!ascendGoals && (
-                                    <span>
-                                        <b>Ascend</b> {ascendGoals} characters
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-bold text-blue-600 dark:text-blue-400">Ascend</span>
+                                        <span className="text-gray-700 dark:text-[#fafafa]">
+                                            {ascendGoals} characters
+                                        </span>
+                                    </div>
                                 )}
                                 {!!upgradeRankGoals && (
-                                    <span>
-                                        <b>Upgrade rank</b> for {upgradeRankGoals} characters
-                                    </span>
+                                    <div className="flex items-center gap-2">
+                                        <span className="font-bold text-blue-600 dark:text-blue-400">Upgrade rank</span>
+                                        <span className="text-gray-700 dark:text-[#fafafa]">
+                                            for {upgradeRankGoals} characters
+                                        </span>
+                                    </div>
                                 )}
                                 {!!topPriorityGoal?.notes && (
-                                    <span>
-                                        <b>Top priority goal notes:</b> {topPriorityGoal.notes}
-                                    </span>
+                                    <div className="flex flex-col gap-1 pt-2 border-t border-gray-300 dark:border-[#ffffff1a]">
+                                        <span className="text-sm font-bold text-gray-800 dark:text-[#fafafa]">
+                                            Top priority goal:
+                                        </span>
+                                        <span className="text-sm italic text-gray-700 dark:text-[#fafafa]">
+                                            {topPriorityGoal.notes}
+                                        </span>
+                                    </div>
                                 )}
-                            </CardContent>
+                            </div>
                         </Card>
                     </div>
                 )}
 
-                <div>
-                    <h3 style={{ textAlign: 'center' }}>Events calendar</h3>
-                    <div
-                        style={{
-                            display: 'flex',
-                            flexWrap: 'wrap',
-                            justifyContent: 'center',
-                            gap: 10,
-                        }}>
-                        {!!calendarUrls.current && (
-                            <div>
-                                {!!calendarUrls.next && <h4 style={{ textAlign: 'center' }}>Current Season</h4>}
-                                <Zoom>
-                                    <img
-                                        src={calendarUrls.current}
-                                        alt="Current Season Events Calendar"
-                                        width={350}
-                                        height={280}
-                                    />
-                                </Zoom>
-                            </div>
-                        )}
+                {/* Events Calendar */}
+                {(!!calendarUrls.current || !!calendarUrls.next) && (
+                    <div className="w-full md:w-auto flex flex-col gap-3">
+                        <h3 className="text-center text-gray-800 dark:text-[#fafafa]">Events Calendar</h3>
+                        <div className="flex flex-wrap justify-center gap-3">
+                            {!!calendarUrls.current && (
+                                <div className="flex flex-col gap-1">
+                                    {!!calendarUrls.next && (
+                                        <h4 className="text-center text-gray-700 dark:text-[#fafafa] text-sm font-semibold">
+                                            Current Season
+                                        </h4>
+                                    )}
+                                    <div className="overflow-hidden transition-shadow duration-200 border border-gray-300 shadow-lg rounded-xl dark:border-gray-700 hover:shadow-xl w-full md:w-[280px] h-[200px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-2">
+                                        <Zoom>
+                                            <img
+                                                src={calendarUrls.current}
+                                                alt="Current Season Events Calendar"
+                                                className="block object-contain max-w-full max-h-full"
+                                            />
+                                        </Zoom>
+                                    </div>
+                                </div>
+                            )}
 
-                        {!!calendarUrls.next && (
-                            <div>
-                                <h4 style={{ textAlign: 'center' }}>Next Season</h4>
-                                <Zoom>
-                                    <img
-                                        src={calendarUrls.next}
-                                        alt="Next Season Events Calendar"
-                                        width={350}
-                                        height={280}
-                                    />
-                                </Zoom>
-                            </div>
-                        )}
+                            {!!calendarUrls.next && (
+                                <div className="flex flex-col gap-1">
+                                    <h4 className="text-center text-gray-700 dark:text-[#fafafa] text-sm font-semibold">
+                                        Next Season
+                                    </h4>
+                                    <div className="overflow-hidden transition-shadow duration-200 border border-gray-300 shadow-lg rounded-xl dark:border-gray-700 hover:shadow-xl w-full md:w-[280px] h-[200px] flex items-center justify-center bg-gray-100 dark:bg-gray-800 p-2">
+                                        <Zoom>
+                                            <img
+                                                src={calendarUrls.next}
+                                                alt="Next Season Events Calendar"
+                                                className="block object-contain max-w-full max-h-full"
+                                            />
+                                        </Zoom>
+                                    </div>
+                                </div>
+                            )}
+                        </div>
                     </div>
-                </div>
+                )}
             </div>
         </div>
     );
